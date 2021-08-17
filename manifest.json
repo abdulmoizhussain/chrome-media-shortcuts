@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Top Posts Viewer",
+  "version": "1.0",
+  "description": "Launch a new tab with top posts from any subreddit.",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "forward": {
+      "suggested_key": "Ctrl+Shift+0",
+      "description": "Backward YouTube Video",
+      "global": true
+    },
+    "backward": {
+      "suggested_key": "Ctrl+Shift+9",
+      "description": "Backward YouTube Video",
+      "global": true
+    }
+  }
+}
