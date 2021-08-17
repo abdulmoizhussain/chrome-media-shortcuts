@@ -29,27 +29,42 @@
 //   //TODO toggle dark mode in the tab
 // });
 
-chrome.commands.onCommand.addListener((command) => {
-  // console.log(command, chrome.tabs);
+chrome.commands.onCommand.addListener(function (command) {
   // chrome.tabs.query({ url: "http://thewebpageiamtryingtoaccess.com/*" }, function (tab) {
-  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=iR0CZoUfun8&list=PL7zbemS0K3KVjhm88HhgiumZjFTT2BO6l&index=*" }, function (tab) {
-    // reload tab with one of the methods from linked answer
-    // chrome.tabs.reload(tab[0].id);
+  // chrome.tabs.query({ url: "https://www.youtube.com/watch?v=iR0CZoUfun8&list=PL7zbemS0K3KVjhm88HhgiumZjFTT2BO6l&index=*" }, function (tab) {
+  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*", status: "complete" }, function (tabs) {
+    if (!tabs.length) {
+      return;
+    }
+
+    tabs.sort((tabX, tabY) => tabX.id - tabY.id);
+
+    const latestTab = tabs[tabs.length - 1];
+
     chrome.scripting.executeScript({
-      target: { tabId: tab[0].id },
-      files: ["host.js"],
+      target: { tabId: latestTab.id },
+      args: [command],
+      function: function (shortcutKeyCommand) {
+        if (typeof streamKeys2_Video === "undefined") {
+          var streamKeys2_Video = document.querySelector(".video-stream.html5-main-video");
+        }
+
+        if (shortcutKeyCommand === "toggle_play") {
+          streamKeys2_Video.paused ? streamKeys2_Video.play() : streamKeys2_Video.pause();
+        }
+        else if (shortcutKeyCommand === "forward") {
+          streamKeys2_Video.currentTime += 10;
+        }
+        else if (shortcutKeyCommand === "backward") {
+          streamKeys2_Video.currentTime -= 10;
+        }
+        else if (shortcutKeyCommand === "toggle_mute") {
+          document.querySelector(".ytp-mute-button.ytp-button").click();
+        }
+      }
     });
-
-    // chrome.scripting.executeScript(tab[0].id, {
-    //   file: 'inject.js'
-    // });
   });
-
-  //TODO handle event
 });
-
-
-
 
 
 

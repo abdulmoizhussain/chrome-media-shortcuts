@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Top Posts Viewer",
+  "name": "YouTubeKeys",
   "version": "1.0",
-  "description": "Launch a new tab with top posts from any subreddit.",
+  "description": "Play/pause/forward/backward of the latest youtube video tab.",
   "permissions": [
     "contextMenus",
-    "tabs",
     "activeTab",
+    "tabs",
     "scripting"
   ],
   "host_permissions": [
@@ -16,14 +16,30 @@
     "service_worker": "background.js"
   },
   "commands": {
-    "forward": {
+    "toggle_play": {
       "suggested_key": "Ctrl+Shift+0",
-      "description": "Backward YouTube Video",
+      "description": "Toggle play/pause",
+      "global": true
+    },
+    "toggle_mute": {
+      "suggested_key": "Ctrl+Shift+1",
+      "description": "Toggle Mute",
+      "global": true
+    },
+    "next_video": {
+      "description": "Next Video"
+    },
+    "prev_video": {
+      "description": "Previous Video"
+    },
+    "forward": {
+      "suggested_key": "Ctrl+Shift+9",
+      "description": "Forward 10 seconds",
       "global": true
     },
     "backward": {
-      "suggested_key": "Ctrl+Shift+9",
-      "description": "Backward YouTube Video",
+      "suggested_key": "Ctrl+Shift+8",
+      "description": "Backward 10 seconds",
       "global": true
     }
   }
