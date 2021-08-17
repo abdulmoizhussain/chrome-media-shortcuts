@@ -47,3 +47,34 @@ chrome.commands.onCommand.addListener((command) => {
 
   //TODO handle event
 });
+
+
+
+
+
+
+
+// manifest.json
+// "browser_action": {
+//   "default_icon": "images/icon.png"
+// },
+// "icons": {
+//   "16": "images/icon.png",
+//   "32": "images/icon.png",
+//   "48": "images/icon.png",
+//   "128": "images/icon.png"
+// }
+
+
+// "background": {
+// "scripts": [
+//   "js/background.js"
+// ]
+
+
+// "_execute_action": {
+//   "suggested_key": "Ctrl+Shift+L",
+//   "description": "Backward YouTube Video",
+//   "global": true
+// }
+// "action": {}
