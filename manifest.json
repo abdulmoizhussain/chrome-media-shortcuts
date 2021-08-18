@@ -2,18 +2,19 @@
   "manifest_version": 3,
   "name": "YouTubeKeys",
   "version": "1.0",
-  "description": "Play/pause/forward/backward of the latest youtube video tab.",
+  "description": "Control basic YouTube controls like play, pause, forward, backward, next-video and previous-video of the latest (last opened) YouTube tab, from your defined shortcut keys.",
   "permissions": [
-    "contextMenus",
-    "activeTab",
-    "tabs",
     "scripting"
   ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
   "host_permissions": [
     "https://*/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "service_worker.js"
   },
   "commands": {
     "toggle_play": {
@@ -26,21 +27,21 @@
       "description": "Toggle Mute",
       "global": true
     },
-    "next_video": {
-      "description": "Next Video"
-    },
-    "prev_video": {
-      "description": "Previous Video"
+    "backward": {
+      "suggested_key": "Ctrl+Shift+8",
+      "description": "Backward 10 seconds",
+      "global": true
     },
     "forward": {
       "suggested_key": "Ctrl+Shift+9",
       "description": "Forward 10 seconds",
       "global": true
     },
-    "backward": {
-      "suggested_key": "Ctrl+Shift+8",
-      "description": "Backward 10 seconds",
-      "global": true
+    "prev_video": {
+      "description": "Previous Video"
+    },
+    "next_video": {
+      "description": "Next Video"
     }
   }
 }

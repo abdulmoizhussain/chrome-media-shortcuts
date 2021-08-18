@@ -12,3 +12,11 @@ https://stackoverflow.com/questions/61323116/chrome-extension-cannot-access-cont
 https://stackoverflow.com/questions/17567624/pass-a-parameter-to-a-content-script-injected-using-chrome-tabs-executescript
 https://developer.chrome.com/docs/extensions/mv3/content_scripts/#programmatic
 https://developer.chrome.com/docs/extensions/reference/commands/
+https://developer.chrome.com/docs/extensions/reference/commands/
+chrome://extensions/shortcuts
+
+
+
+Work on the active YouTube tab, instead of the last-opened YouTube tab.
+
+If a YouTube tab is active, operate that active tab instead of the latest YouTube tab.
