@@ -4,18 +4,19 @@
   "version": "1.0",
   "description": "Control basic YouTube controls like play, pause, forward, backward, next-video and previous-video of the latest (last opened) YouTube tab, from your defined shortcut keys.",
   "permissions": [
-    "scripting"
+    "scripting",
+    "storage"
   ],
-  "action": {
-    "default_popup": "popup.html"
-  },
-  "options_page": "options.html",
   "host_permissions": [
     "https://*/*"
   ],
   "background": {
     "service_worker": "service_worker.js"
   },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
   "commands": {
     "toggle_play": {
       "suggested_key": "Ctrl+Shift+0",

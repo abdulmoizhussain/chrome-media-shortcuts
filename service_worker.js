@@ -27,16 +27,42 @@ function javascriptToInject(shortcutKeyCommand) {
   }
 }
 
+let operateActiveTab = false;
+
+chrome.storage.sync.get({
+  operateActiveTab: false
+}, function (items) {
+  operateActiveTab = items.operateActiveTab;
+});
+
+chrome.storage.onChanged.addListener(function (changes, _namespace) {
+  operateActiveTab = changes["operateActiveTab"]["newValue"];
+});
+
 chrome.commands.onCommand.addListener(function (command) {
   chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*", status: "complete" }, function (tabs) {
     if (!tabs.length) {
       return;
     }
 
-    tabs.sort(sortTabsInDescendingOrderById);
+    let targetedTabId;
+    if (operateActiveTab) {
+      const targetedTab = tabs.filter(tab => tab.active)[0];
+      if (targetedTab) {
+        targetedTabId = targetedTab.id;
+      }
+      else {
+        tabs.sort(sortTabsInDescendingOrderById);
+        targetedTabId = tabs[0].id;
+      }
+    }
+    else {
+      tabs.sort(sortTabsInDescendingOrderById);
+      targetedTabId = tabs[0].id;
+    }
 
     chrome.scripting.executeScript({
-      target: { tabId: tabs[0].id },
+      target: { tabId: targetedTabId },
       function: javascriptToInject,
       args: [command],
     });
