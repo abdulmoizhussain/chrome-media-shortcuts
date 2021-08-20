@@ -1,7 +1,3 @@
-body {
-  width: 300px;
-}
-
 .option {
   margin-top: 17px;
 }
@@ -15,20 +11,6 @@ body {
   display: flex;
 }
 
-.parent-label {
-  margin-left: 10px;
-}
-
-#workOnActiveTab {
-  width: 17px;
-  height: 17px;
-  margin: auto 0;
-}
-
 .active-tab label, .active-tab input {
   cursor: pointer;
-}
-
-.active-tab label, button {
-  font-size: 18px;
 }

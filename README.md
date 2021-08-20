@@ -16,7 +16,7 @@ https://developer.chrome.com/docs/extensions/reference/commands/
 chrome://extensions/shortcuts
 
 
-TODOS:
+TODOs:
 
 Work on the active YouTube tab, instead of the last-opened YouTube tab.
 
