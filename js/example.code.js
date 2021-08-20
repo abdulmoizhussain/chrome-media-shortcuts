@@ -59,13 +59,13 @@
 // "action": {}
 
 
-"action": {
-  "default_title": "My Bookmarks",
-  "default_icon": "icon.png",
-}
+// "action": {
+//   "default_title": "My Bookmarks",
+//   "default_icon": "icon.png",
+// }
 
-"permissions": [
-  "contextMenus",
-  "activeTab",
-  "tabs",
-]
+// "permissions": [
+//   "contextMenus",
+//   "activeTab",
+//   "tabs",
+// ]

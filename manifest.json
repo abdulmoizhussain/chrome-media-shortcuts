@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "YouTubeKeys",
+  "name": "Media Keys",
   "version": "1.0",
-  "description": "Control basic YouTube controls like play, pause, forward, backward, next-video and previous-video of the latest (last opened) YouTube tab, from your defined shortcut keys.",
+  "description": "Control YouTube-video of your latest (last opened) YouTube tab: like play, pause, forward, backward, next-video and previous-video, from your defined keyboard shortcuts.",
   "permissions": [
     "scripting",
     "storage"
@@ -14,9 +14,9 @@
     "service_worker": "service_worker.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "html/popup.html"
   },
-  "options_page": "options.html",
+  "options_page": "html/options.html",
   "commands": {
     "toggle_play": {
       "suggested_key": "Ctrl+Shift+0",
