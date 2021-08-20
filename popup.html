@@ -2,34 +2,54 @@
 
 <head>
   <style>
-    body.popup {
+    body {
       width: 300px;
     }
 
     .option {
-      margin-top: 15px;
+      margin-top: 17px;
     }
 
-    .option.active-tab {
+    .active-tab {
       display: flex;
       flex-direction: row;
     }
 
-    .option.active-tab>.label {
-      margin-left: 5px;
+    .parent-input {
+      display: flex;
+    }
+
+    .parent-label {
+      margin-left: 10px;
+    }
+
+    #workOnActiveTab {
+      width: 17px;
+      height: 17px;
+      margin: auto 0;
+    }
+
+    .active-tab label,
+    .active-tab input {
+      cursor: pointer;
+    }
+
+    .active-tab label,
+    button {
+      font-size: 18px;
     }
   </style>
 </head>
 
-<body class="popup">
+<body>
   <div class="option">
     <button type="button" id="id_configure_shortcuts">Configure Shortcut Keys</button>
   </div>
   <div class="option active-tab">
-    <div>
+    <div class="parent-input">
       <input id="workOnActiveTab" type="checkbox">
     </div>
-    <div class="label">
+    <div class="parent-label">
       <label for="workOnActiveTab">If a YouTube tab is active, operate that active tab instead of the latest YouTube tab.</label>
     </div>
   </div>
