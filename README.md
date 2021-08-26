@@ -18,9 +18,12 @@ chrome://extensions/shortcuts
 
 TODOs:
 
-Work on the active YouTube tab, instead of the last-opened YouTube tab.
+-Work on the active YouTube tab, instead of the last-opened YouTube tab.
+-If a YouTube tab is active, operate that active tab instead of the latest YouTube tab.
 
-If a YouTube tab is active, operate that active tab instead of the latest YouTube tab.
+-try to remove tabs from permissions.
+
+
 
 on tab load/open/close events
 

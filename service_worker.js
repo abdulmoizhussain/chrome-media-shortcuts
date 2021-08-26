@@ -1,8 +1,55 @@
+let operateActiveTab = false;
+let targeted_tab_id = null;
+
+function tabListener(listenerType, tabId, changeInfo, tab) {
+  // function tabListener() {
+  console.log(listenerType, tabId, changeInfo, tab);
+
+  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*", status: "complete" }, function (tabs) {
+    console.group("chrome.tabs.query");
+    console.log(tabs);
+    console.groupEnd();
+    if (!tabs.length) {
+      targeted_tab_id = null;
+      return;
+    }
+
+    if (operateActiveTab) {
+      const targetedTab = tabs.filter(tab => tab.active)[0];
+      if (targetedTab) {
+        targeted_tab_id = targetedTab.id;
+      }
+      else {
+        tabs.sort(sortTabsInDescendingOrderById);
+        targeted_tab_id = tabs[0].id;
+      }
+    }
+    else {
+      tabs.sort(sortTabsInDescendingOrderById);
+      targeted_tab_id = tabs[0].id;
+    }
+  });
+}
+
+chrome.tabs.onActivated.addListener(function () {
+  console.log(arguments);
+});
+
+chrome.tabs.onCreated.addListener((tabId, changeInfo, tab) => { tabListener("onCreated", tabId, changeInfo, tab); });
+chrome.tabs.onRemoved.addListener((tabId, changeInfo, tab) => { tabListener("onRemoved", tabId, changeInfo, tab); });
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === "complete")
+    tabListener("onUpdated", tabId, changeInfo, tab);
+});
+
 function sortTabsInDescendingOrderById(tabX, tabY) {
   return tabY.id - tabX.id;
 }
 
 function javascriptToInject(shortcutKeyCommand) {
+  console.group("javascriptToInject");
+  console.log(shortcutKeyCommand);
+  console.groupEnd();
   if (typeof streamKeys2_Video === "undefined") {
     var streamKeys2_Video = document.querySelector(".video-stream.html5-main-video");
   }
@@ -27,8 +74,6 @@ function javascriptToInject(shortcutKeyCommand) {
   }
 }
 
-let operateActiveTab = false;
-
 chrome.storage.sync.get({
   operateActiveTab: false
 }, function (items) {
@@ -40,31 +85,21 @@ chrome.storage.onChanged.addListener(function (changes, _namespace) {
 });
 
 chrome.commands.onCommand.addListener(function (command) {
-  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*", status: "complete" }, function (tabs) {
-    if (!tabs.length) {
-      return;
-    }
+  console.group();
+  console.log(targeted_tab_id);
+  if (typeof targeted_tab_id !== "number") {
+    console.log("returning");
+    console.groupEnd();
+    return;
+  }
+  console.groupEnd();
 
-    let targetedTabId;
-    if (operateActiveTab) {
-      const targetedTab = tabs.filter(tab => tab.active)[0];
-      if (targetedTab) {
-        targetedTabId = targetedTab.id;
-      }
-      else {
-        tabs.sort(sortTabsInDescendingOrderById);
-        targetedTabId = tabs[0].id;
-      }
-    }
-    else {
-      tabs.sort(sortTabsInDescendingOrderById);
-      targetedTabId = tabs[0].id;
-    }
-
-    chrome.scripting.executeScript({
-      target: { tabId: targetedTabId },
-      function: javascriptToInject,
-      args: [command],
-    });
+  chrome.scripting.executeScript({
+    target: { tabId: targeted_tab_id },
+    function: javascriptToInject,
+    args: [command],
   });
 });
+
+// first time
+tabListener();

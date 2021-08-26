@@ -5,6 +5,7 @@
   "description": "Control YouTube-video of your latest (last opened) YouTube tab: like play, pause, forward, backward, next-video and previous-video, from your defined keyboard shortcuts.",
   "permissions": [
     "scripting",
+    "tabs",
     "storage"
   ],
   "host_permissions": [
