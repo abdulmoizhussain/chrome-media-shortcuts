@@ -2,16 +2,6 @@ body {
   width: 500px;
 }
 
-#workOnActiveTab {
-  width: 21px;
-  height: 21px;
-  margin: auto 0;
-}
-
-.active-tab label, button {
+button {
   font-size: 22px;
-}
-
-.parent-label {
-  margin-left: 13px;
 }

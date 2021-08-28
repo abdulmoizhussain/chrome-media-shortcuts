@@ -1,67 +1,51 @@
-let operateActiveTab = false;
-let targeted_tab_id = null;
+let latestTabId = null;
 
 function tabListener(listenerType, tabId, changeInfo, tab) {
-  // function tabListener() {
-  console.log(listenerType, tabId, changeInfo, tab);
+  // console.log(listenerType, tabId, changeInfo, tab);
 
-  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*", status: "complete" }, function (tabs) {
+  chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*" }, function (tabs) {
     console.group("chrome.tabs.query");
     console.log(tabs);
     console.groupEnd();
     if (!tabs.length) {
-      targeted_tab_id = null;
+      latestTabId = null;
       return;
     }
 
-    if (operateActiveTab) {
-      const targetedTab = tabs.filter(tab => tab.active)[0];
-      if (targetedTab) {
-        targeted_tab_id = targetedTab.id;
-      }
-      else {
-        tabs.sort(sortTabsInDescendingOrderById);
-        targeted_tab_id = tabs[0].id;
-      }
-    }
-    else {
-      tabs.sort(sortTabsInDescendingOrderById);
-      targeted_tab_id = tabs[0].id;
-    }
+    tabs.sort(sortTabsByIdInDescendingOrder);
+    latestTabId = tabs[0].id;
   });
 }
 
-chrome.tabs.onActivated.addListener(function () {
-  console.log(arguments);
+chrome.tabs.onCreated.addListener((tabId, changeInfo, tab) => {
+  tabListener("onCreated", tabId, changeInfo, tab);
 });
-
-chrome.tabs.onCreated.addListener((tabId, changeInfo, tab) => { tabListener("onCreated", tabId, changeInfo, tab); });
-chrome.tabs.onRemoved.addListener((tabId, changeInfo, tab) => { tabListener("onRemoved", tabId, changeInfo, tab); });
+chrome.tabs.onRemoved.addListener((tabId, changeInfo, tab) => {
+  tabListener("onRemoved", tabId, changeInfo, tab);
+});
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === "complete")
+  if (changeInfo.status === "complete") {
     tabListener("onUpdated", tabId, changeInfo, tab);
+  }
 });
 
-function sortTabsInDescendingOrderById(tabX, tabY) {
+function sortTabsByIdInDescendingOrder(tabX, tabY) {
   return tabY.id - tabX.id;
 }
 
 function javascriptToInject(shortcutKeyCommand) {
-  console.group("javascriptToInject");
-  console.log(shortcutKeyCommand);
-  console.groupEnd();
-  if (typeof streamKeys2_Video === "undefined") {
-    var streamKeys2_Video = document.querySelector(".video-stream.html5-main-video");
+  if (typeof mediaShortcutsVideoTag === "undefined") {
+    var mediaShortcutsVideoTag = document.querySelector(".video-stream.html5-main-video");
   }
 
   if (shortcutKeyCommand === "toggle_play") {
-    streamKeys2_Video.paused ? streamKeys2_Video.play() : streamKeys2_Video.pause();
+    mediaShortcutsVideoTag.paused ? mediaShortcutsVideoTag.play() : mediaShortcutsVideoTag.pause();
   }
   else if (shortcutKeyCommand === "forward") {
-    streamKeys2_Video.currentTime += 10;
+    mediaShortcutsVideoTag.currentTime += 10;
   }
   else if (shortcutKeyCommand === "backward") {
-    streamKeys2_Video.currentTime -= 10;
+    mediaShortcutsVideoTag.currentTime -= 10;
   }
   else if (shortcutKeyCommand === "toggle_mute") {
     document.querySelector(".ytp-mute-button.ytp-button").click();
@@ -74,20 +58,10 @@ function javascriptToInject(shortcutKeyCommand) {
   }
 }
 
-chrome.storage.sync.get({
-  operateActiveTab: false
-}, function (items) {
-  operateActiveTab = items.operateActiveTab;
-});
-
-chrome.storage.onChanged.addListener(function (changes, _namespace) {
-  operateActiveTab = changes["operateActiveTab"]["newValue"];
-});
-
 chrome.commands.onCommand.addListener(function (command) {
   console.group();
-  console.log(targeted_tab_id);
-  if (typeof targeted_tab_id !== "number") {
+  console.log(latestTabId);
+  if (typeof latestTabId !== "number") {
     console.log("returning");
     console.groupEnd();
     return;
@@ -95,7 +69,7 @@ chrome.commands.onCommand.addListener(function (command) {
   console.groupEnd();
 
   chrome.scripting.executeScript({
-    target: { tabId: targeted_tab_id },
+    target: { tabId: latestTabId },
     function: javascriptToInject,
     args: [command],
   });
