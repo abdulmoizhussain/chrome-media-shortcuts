@@ -2,6 +2,14 @@ body {
   width: 300px;
 }
 
+.root {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 button {
   font-size: 18px;
 }
