@@ -3,6 +3,19 @@ const YOU_TUBE_WATCH_URL_REGEX = /.+youtube\.com\/watch\?v=.+/;
 const tabStatuses = ["loading", "complete"];
 let latestTabId = null;
 
+function listenerFindTabs(tabs) {
+  console.group("chrome.tabs.query");
+  console.log(tabs);
+  console.groupEnd();
+  if (!tabs.length) {
+    latestTabId = null;
+    return;
+  }
+
+  tabs.sort(sortTabsByIdInDescendingOrder);
+  latestTabId = tabs[0].id;
+}
+
 function tabListener(listenerType, tabId, changeInfo, tab) {
   // console.log(listenerType, tabId, changeInfo, tab);
 
@@ -11,18 +24,7 @@ function tabListener(listenerType, tabId, changeInfo, tab) {
       url: "https://www.youtube.com/watch?v=*",
       discarded: false,
     },
-    function (tabs) {
-      console.group("chrome.tabs.query");
-      console.log(tabs);
-      console.groupEnd();
-      if (!tabs.length) {
-        latestTabId = null;
-        return;
-      }
-
-      tabs.sort(sortTabsByIdInDescendingOrder);
-      latestTabId = tabs[0].id;
-    }
+    listenerFindTabs
   );
 }
 
