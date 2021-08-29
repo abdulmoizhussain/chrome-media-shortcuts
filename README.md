@@ -13,6 +13,7 @@ https://stackoverflow.com/questions/17567624/pass-a-parameter-to-a-content-scrip
 https://developer.chrome.com/docs/extensions/mv3/content_scripts/#programmatic
 https://developer.chrome.com/docs/extensions/reference/commands/
 https://developer.chrome.com/docs/extensions/reference/commands/
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/query
 chrome://extensions/shortcuts
 
 

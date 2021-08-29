@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Media Keys",
+  "name": "Media Shortcuts",
   "version": "1.0",
   "description": "Control YouTube-video of your latest (last opened) YouTube tab: like play, pause, forward, backward, next-video and previous-video, from your defined keyboard shortcuts.",
   "permissions": [
