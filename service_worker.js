@@ -39,6 +39,9 @@ class TabState {
       if (latestTab) {
         this.setLatestTabId(latestTab.id);
       }
+      else {
+        // TODO this.tabid = null;
+      }
     }
   }
 }
