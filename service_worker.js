@@ -1,4 +1,11 @@
-
+/**
+ * @returns {Promise<Array<Object>>}
+ */
+function getYoutubeWatchTabsAsync() {
+  return new Promise(function (resolve) {
+    chrome.tabs.query({ url: "https://www.youtube.com/watch?v=*" }, resolve);
+  });
+}
 
 class TabState {
   tabId = null;
@@ -12,6 +19,9 @@ class TabState {
   }
   static sortTabsByTimestampInDscOrder(tabX, tabY) {
     return tabY.timestamp - tabX.timestamp;
+  }
+  static sortTabsByIdInDescendingOrder(tabX, tabY) {
+    return tabY.id - tabX.id;
   }
   addNewTab(tabId) {
     const foundTabIndex = this.allTabs.findIndex(tab => tab.id === tabId);
@@ -37,12 +47,18 @@ class TabState {
       this.allTabs.splice(foundTabIndex, 1);
       this.allTabs.sort(TabState.sortTabsByTimestampInDscOrder);
       const [latestTab] = this.allTabs;
-      if (latestTab) {
-        this.setLatestTabId(latestTab.id);
-      }
-      else {
-        // TODO this.tabid = null;
-      }
+      this.setLatestTabId(latestTab && latestTab.id);
+    }
+  }
+  async onStartup() {
+    const tabs = await getYoutubeWatchTabsAsync();
+
+    if (!tabs.length) {
+      return;
+    }
+
+    for (const tab of tabs) {
+      this.addNewTab(tab.id);
     }
   }
 }
@@ -50,7 +66,7 @@ class TabState {
 
 
 // /.+ youtube\.com\/watch\?v=.+/.exec("https://www.youtube.com/watch?v=Ev8Hg");
-const YOU_TUBE_WATCH_URL_REGEX = /.+youtube\.com\/watch\?v=.+/;
+const YOUTUBE_WATCH_URL_REGEX = /.+youtube\.com\/watch\?v=.+/;
 const tabStatuses = ["loading", "complete"];
 const tabState = new TabState();
 // let latestTabId = null;
@@ -64,7 +80,7 @@ const tabState = new TabState();
 //     latestTabId = null;
 //     return;
 //   }
-//   tabs.sort(sortTabsByIdInDescendingOrder);
+//   tabs.sort(TabState.sortTabsByIdInDescendingOrder);
 //   latestTabId = tabs[0].id;
 //   tabState.setLatestTabId(tabs[0].id);
 // }
@@ -94,7 +110,7 @@ chrome.tabs.onRemoved.addListener((tabId, changeInfo, tab) => {
 });
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   console.log("onUpdated", tabId, changeInfo, tab);
-  if (tabStatuses.includes(changeInfo.status) && YOU_TUBE_WATCH_URL_REGEX.test(tab.url)) {
+  if (tabStatuses.includes(changeInfo.status) && YOUTUBE_WATCH_URL_REGEX.test(tab.url)) {
     // tabListener("onUpdated", tabId, changeInfo, tab);
 
     // latestTabId = tabId;
@@ -102,9 +118,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 });
 
-// function sortTabsByIdInDescendingOrder(tabX, tabY) {
-//   return tabY.id - tabX.id;
-// }
 
 function javascriptToInject(shortcutKeyCommand) {
   if (typeof mediaShortcutsVideoTag === "undefined") {
@@ -152,3 +165,5 @@ chrome.commands.onCommand.addListener(function (command) {
     args: [command],
   });
 });
+
+tabState.onStartup();
